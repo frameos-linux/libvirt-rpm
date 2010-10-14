@@ -18,7 +18,8 @@
 
 # First the daemon itself
 %define with_libvirtd      0%{!?_without_libvirtd:%{server_drivers}}
-%define with_avahi         0%{!?_without_avahi:%{server_drivers}}
+#%define with_avahi         0%{!?_without_avahi:%{server_drivers}}
+%define with_avahi         0
 
 # Then the hypervisor drivers that run on local host
 %define with_xen           0%{!?_without_xen:%{server_drivers}}
@@ -116,6 +117,8 @@
 %else
 %define with_hal       0%{!?_without_hal:%{server_drivers}}
 %endif
+# force hal
+%define with_hal 1
 
 # Enable yajl library for JSON mode with QEMU
 %if 0%{?fedora} >= 13 || 0%{?rhel} >= 6
@@ -134,18 +137,18 @@
 
 # The RHEL-5 Xen package has some feature backports. This
 # flag is set to enable use of those special bits on RHEL-5
-%if 0%{?rhel} == 5
+#%if 0%{?rhel} == 5
 %define with_rhel5  1
-%else
-%define with_rhel5  0
-%endif
+#%else
+#%define with_rhel5  0
+#%endif
 
 
 Summary: Library providing a simple API virtualization
 Name: libvirt
-Version: 0.8.3
+Version: 0.8.4
 #Release: 1%{?dist}%{?extra_release}
-Release: 3frameos
+Release: 2frameos
 License: LGPLv2+
 Group: Development/Libraries
 Source: http://libvirt.org/sources/libvirt-%{version}.tar.gz
@@ -797,6 +800,12 @@ fi
 %endif
 
 %changelog
+* Thu Oct 14 2010 Sergio Rubio <rubiojr@frameos.org> - 0.8.4-2frameos
+- disable avahi support
+
+* Thu Oct 14 2010 Sergio Rubio <rubiojr@frameos.org> - 0.8.4-1frameos
+- updated to 0.8.4
+
 * Mon Aug 10 2010 Sergio Rubio <sergio@rubio.name> - 0.8.3-3frameos
 - add modprobe.d disable-nf-bridge.conf script
 
